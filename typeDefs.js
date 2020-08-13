@@ -3,20 +3,25 @@ const { gql } = require('apollo-server-express')
 const typeDefs = gql`
   scalar Date
 
-  type Query {
-    notes: [Note]
-  }
-
   type Note {
     id: ID!
     title: String!
     description: String!
-    createdAt: Date
-    updatedAt: Date
+    createdAt: Date!
+    updatedAt: Date!
+  }
+
+  input NoteInput {
+    title: String!
+    description: String!
+  }
+
+  type Query {
+    notes: [Note]
   }
 
   type Mutation {
-    createNote(title: String!, description: String!): Note!
+    createNote(noteInput: NoteInput): Note!
     deleteNote(id: ID!): Note!
   }
 `

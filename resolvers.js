@@ -23,9 +23,9 @@ const resolvers = {
     notes: async () => await Note.find({}),
   },
   Mutation: {
-    createNote: async (_, args) => {
+    createNote: async (_, { noteInput }) => {
       try {
-        const note = await Note.create(args)
+        const note = await Note.create(noteInput)
         return note
       } catch (error) {
         return error.message
