@@ -13,8 +13,10 @@ const startServer = async () => {
   server.applyMiddleware({ app })
 
   await mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useNewUrlParser: true, // fix current deprecated string parser warning
+    useUnifiedTopology: true, // fix current deprecated server dicovery and monitoring engine warning
+    useFindAndModify: false, // opt out from mongodb driver
+    autoIndex: false, // disable automatic createIndex
   })
 
   app.listen({ port: 4000 }, () =>

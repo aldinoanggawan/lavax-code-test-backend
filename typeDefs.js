@@ -17,12 +17,15 @@ const typeDefs = gql`
   }
 
   type Query {
+    totalCount: Int
     notes: [Note]
+    note(id: ID): Note
   }
 
   type Mutation {
-    createNote(noteInput: NoteInput): Note!
+    createNote(noteInput: NoteInput!): Note!
     deleteNote(id: ID!): Note!
+    updateNote(id: ID!, noteInput: NoteInput!): Note!
   }
 `
 

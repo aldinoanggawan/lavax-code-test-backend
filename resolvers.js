@@ -20,7 +20,9 @@ const resolvers = {
     },
   }),
   Query: {
+    totalCount: async () => await Note.estimatedDocumentCount(),
     notes: async () => await Note.find({}),
+    note: async (_, { id }) => await Note.findById(id),
   },
   Mutation: {
     createNote: async (_, { noteInput }) => {
@@ -34,6 +36,17 @@ const resolvers = {
     deleteNote: async (_, { id }) => {
       try {
         const note = await Note.findByIdAndDelete(id)
+        return note
+      } catch (error) {
+        return error.message
+      }
+    },
+    updateNote: async (_, { id, noteInput }) => {
+      try {
+        const note = await Note.findByIdAndUpdate(id, noteInput, {
+          new: true, // return the updated document
+          runValidators: true, // validate the update operation against the model's schema
+        })
         return note
       } catch (error) {
         return error.message
