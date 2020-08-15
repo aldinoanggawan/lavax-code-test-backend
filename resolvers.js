@@ -22,7 +22,7 @@ const resolvers = {
   Query: {
     totalCount: async () => await Note.estimatedDocumentCount(),
     notes: async (_, args) => {
-      const { search = null, page = 1, limit = 5 } = args
+      const { search = null, skip = 0, first = 0 } = args
 
       let searchQuery = {}
 
@@ -43,16 +43,10 @@ const resolvers = {
 
       const notes = await Note.find(searchQuery)
         .sort(orderBy)
-        .limit(limit)
-        .skip((page - 1) * limit)
+        .limit(first)
+        .skip(skip)
 
-      const count = await Note.countDocuments(searchQuery)
-
-      return {
-        currentPage: page,
-        totalPages: Math.ceil(count / limit),
-        notes,
-      }
+      return notes
     },
     note: async (_, { id }) => await Note.findById(id),
   },

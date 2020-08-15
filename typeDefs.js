@@ -21,12 +21,6 @@ const typeDefs = gql`
     updatedAt: Date!
   }
 
-  type NotesResult {
-    currentPage: Int
-    totalPages: Int
-    notes: [Note]
-  }
-
   input NoteInput {
     title: String!
     description: String!
@@ -34,12 +28,7 @@ const typeDefs = gql`
 
   type Query {
     totalCount: Int
-    notes(
-      orderBy: OrderByInput
-      search: String
-      page: Int
-      limit: Int
-    ): NotesResult
+    notes(orderBy: OrderByInput, search: String, skip: Int, first: Int): [Note]
     note(id: ID): Note
   }
 
