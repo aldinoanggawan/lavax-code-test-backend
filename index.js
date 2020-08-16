@@ -1,5 +1,6 @@
 require('dotenv').config()
 const { ApolloServer } = require('apollo-server-express')
+const cors = require('cors')
 const express = require('express')
 const mongoose = require('mongoose')
 const { resolvers } = require('./resolvers')
@@ -7,6 +8,9 @@ const { typeDefs } = require('./typeDefs')
 
 const startServer = async () => {
   const app = express()
+
+  //enable cors
+  app.use(cors())
 
   const server = new ApolloServer({ typeDefs, resolvers })
 
@@ -19,8 +23,12 @@ const startServer = async () => {
     autoIndex: false, // disable automatic createIndex
   })
 
-  app.listen({ port: 4000 }, () =>
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+  const PORT = process.env.PORT || 4000
+
+  app.listen(PORT, () =>
+    console.log(
+      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+    )
   )
 }
 
