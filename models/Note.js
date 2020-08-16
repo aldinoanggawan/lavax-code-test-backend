@@ -14,6 +14,10 @@ const NoteSchema = new mongoose.Schema(
       required: true,
       maxLength: [250, 'Description maximum character is 250'],
     },
+    important: {
+      type: Boolean,
+      required: true,
+    },
   },
   {
     timestamps: true,

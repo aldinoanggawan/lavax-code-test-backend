@@ -17,6 +17,7 @@ const typeDefs = gql`
     id: ID!
     title: String!
     description: String!
+    important: Boolean!
     createdAt: Date!
     updatedAt: Date!
   }
@@ -28,12 +29,18 @@ const typeDefs = gql`
 
   type Query {
     totalCount: Int
-    notes(orderBy: OrderByInput, search: String, skip: Int, first: Int): [Note]
+    notes(
+      orderBy: OrderByInput
+      skip: Int
+      first: Int
+      search: String
+      important: Boolean
+    ): [Note]
     note(id: ID): Note
   }
 
   type Mutation {
-    createNote(noteInput: NoteInput!): Note!
+    createNote(noteInput: NoteInput!, important: Boolean): Note!
     deleteNote(id: ID!): Note!
     updateNote(id: ID!, noteInput: NoteInput!): Note!
   }

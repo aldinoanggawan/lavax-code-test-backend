@@ -22,7 +22,7 @@ const resolvers = {
   Query: {
     totalCount: async () => await Note.estimatedDocumentCount(),
     notes: async (_, args) => {
-      const { search = null, skip = 0, first = 0 } = args
+      const { skip = 0, first = 0, search = null, important = false } = args
 
       let searchQuery = {}
 
@@ -32,6 +32,12 @@ const resolvers = {
             { title: { $regex: search, $options: 'i' } },
             { description: { $regex: search, $options: 'i' } },
           ],
+        }
+      }
+
+      if (important) {
+        searchQuery = {
+          important,
         }
       }
 
@@ -51,9 +57,10 @@ const resolvers = {
     note: async (_, { id }) => await Note.findById(id),
   },
   Mutation: {
-    createNote: async (_, { noteInput }) => {
+    createNote: async (_, { noteInput, important = false }) => {
+      const { title, description } = noteInput
       try {
-        const note = await Note.create(noteInput)
+        const note = await Note.create({ title, description, important })
         return note
       } catch (error) {
         return error.message
